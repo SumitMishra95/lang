@@ -123,6 +123,29 @@ class SingleLinked:
                 previous.set_next(current.get_next())
                 self.length -= 1
 
+    # Delete any specific value from list
+    def delete_value(self, value):
+        if self.length == 0:
+            raise IndexError("List has no elements to delete.")
+        else:
+            previous = None
+            current = self.head
+            if current.get_data() == value:
+                self.delete_beg()
+                return
+            found = False
+            while current.get_next() is not None and found == False:
+                previous = current
+                current = current.get_next()
+                if current.get_data() == value:
+                    found = True
+
+            if found == False:
+                raise Exception("Node not found.")
+
+            previous.set_next(current.get_next())
+            self.length -= 1
+
     def print_list(self):
         current = self.head
         while current is not None:
@@ -140,4 +163,5 @@ li.insert_pos(2, 30)
 li.insert_pos(2, 28)
 li.delete_beg()
 li.delete_pos(2)
+li.delete_value(30)
 li.print_list()
