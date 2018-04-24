@@ -1,95 +1,143 @@
-# Node class
-class Node(object):
-    # Function to initialize the node object
+class Node:
     def __init__(self, data=None, next=None):
         self.data = data
         self.next = next
 
+    def set_data(self, data):
+        self.data = data
+
     def get_data(self):
         return self.data
+
+    def set_next(self, next):
+        self.next = next
 
     def get_next(self):
         return self.next
 
-    def set_next(self, new_next):
-        self.next = new_next
+    def has_next(self):
+        return self.next is not None
 
 
-# Linked list class contains a node object
-class LinkedList(object):
-    def __init__(self):
-        self.head = None
+class SingleLinked:
 
-    def printList(self):
-        print("Printing the nodes: ", end='')
-        temp = self.head
-        while(temp):
-            print ("{0} ".format(temp.data), end='')
-            temp = temp.next
-
-    # Function to insert a node in the begining
-    def push(self, new_data):
-        # temp = self.head
-        new_node = Node(new_data)
-        new_node.next = self.head
-        self.head = new_node
-
-    # Function to insert a node at the end.
-    def append(self, new_data):
-        new_node = Node(new_data)
-
-        if self.head is None:
-            # If the list is empty just set the new node as the new head
-            self.head = new_node
+    def __init__(self, head=None):
+        self.head = head
+        if self.head is not None:
+            self.length = 1
         else:
-            # Iterate through the list and get the last node
-            temp = self.head
-            while (temp.next):
-                temp = temp.next
-            temp.next = new_node
+            self.length = 0
 
-    # Function to insert a node after the given preiv_ndoe
-    def insertAfter(self, prev_node, new_data):
-        if prev_node is None:
-            return
+    def list_length(self):
+        current = self.head
+        count = 0
+        while current is not None:
+            count = count + 1
+            current = current.get_next()
+        return count
 
-        # Create the new node
-        new_node = Node(new_data)
+    # Insert at the beginning of the list
+    def insert_beg(self, data):
+        if self.head is None:
+            self.head = Node(data)
+        else:
+            new_node = Node(data)
+            new_node.set_next(self.head)
+            self.head = new_node
+        self.length += 1
 
-        # Set the next node of prev_node as next node of new node
-        new_node.next = prev_node.next
+    # Insert at the end of the list
+    def insert_end(self, data):
+        if self.head is None:
+            self.head = Node(data)
+        else:
+            new_node = Node(data)
+            current = self.head
+            while current.get_next() is not None:
+                current = current.get_next()
+            current.set_next(new_node)
+        self.length += 1
 
-        # Set new node as next of prev_node
-        prev_node.next = new_node
+    # Insert at any position of the list
+    def insert_pos(self, pos, data):
+        if pos > self.length or pos < 0:
+            raise IndexError("Index is not correct")
+        else:
+            if pos == 0:
+                self.insert_beg(data)
+            elif pos == self.length:
+                self.insert_end(data)
+            else:
+                new_node = Node(data)
+                count = 0
+                current = self.head
+                while count < pos:
+                    current = current.get_next()
+                    count += 1
+                new_node.set_next(current.get_next())
+                current.set_next(new_node)
+                self.length += 1
 
-    def deleteNode(self, key):
-        temp = self.head
-        while (temp.next):
-            temp = temp.next
+    # Delete from the beginning of the list
+    def delete_beg(self):
+        if self.length == 0:
+            raise IndexError("List is already empty.")
+        else:
+            self.head = self.head.get_next()
+            self.length -= 1
+
+    # Delete from the end of the list
+    def delete_end(self):
+        if self.length == 0:
+            raise IndexError("List is already empty.")
+        else:
+            current = self.head
+            previous = self.head
+            while current.get_next is not None:
+                previous = current
+                current = current.get_next()
+            previous.set_next(None)
+            self.length -= 1
+
+    # Delete from any position from the list
+    def delete_pos(self, pos):
+        if self.length == 0:
+            raise IndexError("List is already empty.")
+
+        if self.length < pos or pos < 0:
+            raise IndexError("Index out of bound.")
+
+        else:
+            if pos == 0:
+                self.delete_beg()
+            elif pos == self.length - 1:
+                self.delete_end()
+            else:
+                current = self.head
+                previous = None
+                count = 0
+                while count < pos:
+                    previous = current
+                    current = current.get_next()
+                    count += 1
+                previous.set_next(current.get_next())
+                self.length -= 1
+
+    def print_list(self):
+        current = self.head
+        while current is not None:
+            print(current.data)
+            current = current.get_next()
 
 
-def main():
-    # Start with the empty list
-    llist = LinkedList()
-
-    # Insert 6.  So linked list becomes 6->None
-    llist.append(6)
-
-    # Insert 7 at the beginning. So linked list becomes 7->6->None
-    llist.push(7)
-
-    # Insert 1 at the beginning. So linked list becomes 1->7->6->None
-    llist.push(1)
-
-    # Insert 4 at the end. So linked list becomes 1->7->6->4->None
-    llist.append(4)
-
-    # Insert 8, after 7. So linked list becomes 1 -> 7-> 8-> 6-> 4-> None
-    llist.insertAfter(llist.head.next, 8)
-
-    print ('Created linked list is:')
-    llist.printList()
-
-
-if __name__ == "__main__":
-    main()
+li = SingleLinked()
+li.insert_beg(35)
+li.insert_beg(25)
+li.insert_beg(15)
+li.insert_beg(5)
+li.insert_end(45)
+li.insert_pos(2, 30)
+li.insert_pos(2, 28)
+li.delete_beg()
+li.delete_pos(2)
+li.print_list()
