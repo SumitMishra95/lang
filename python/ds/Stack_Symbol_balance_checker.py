@@ -64,5 +64,4 @@ def check_symbol_balance(input):
                     balanced = 0
     return print(bool(balanced))
 
-
 check_symbol_balance("()")
