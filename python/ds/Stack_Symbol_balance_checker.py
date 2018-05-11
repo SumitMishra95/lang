@@ -26,10 +26,9 @@ class Dynamic_Array_Stack:
         self.length -= 1
 
         print("Element popped ", temp)
-        print("Stack after push", self.stack)
 
     def top(self):
-        print(self.stack[-1])
+        return self.stack[-1]
 
     def size(self):
         print(self.length)
@@ -52,8 +51,6 @@ def check_symbol_balance(input):
         else:
             if symbol_stack.isEmpty():
                 balanced = 0
-                if symbol in [")", "}", "]"]:
-                    return print("Not balanced.")
 
             else:
                 top = symbol_stack.pop()
@@ -64,4 +61,4 @@ def check_symbol_balance(input):
                     balanced = 0
     return print(bool(balanced))
 
-check_symbol_balance("()")
+check_symbol_balance("[a}()")
